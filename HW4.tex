@@ -33,7 +33,7 @@
 \begin{center}
 {\Large\bf Assignment \#4: Data Collection and Preparation}
 \vspace{3mm}
-\\Noah Wolfe
+\\Caitlin Ross \& Noah Wolfe
 \\02/18/2016
 \\*[3mm]
 \end{center}
@@ -42,9 +42,23 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Data Source (ROSS)}
 %Description of the data source and corresponding applications.
+In this assignment, we have decided to generate/collect data from our ROSS research projects. 
+ROSS is a massively parallel discrete-event simulator that
+can process billions of events per second \cite{Holder}, \cite{Bauer}. ROSS
+models are made up of a collection of logical processes (LPs).
+Each LP models a distinct component of the system. LPs
+interact with one another through events in the form of time-stamped messages. An MPI task is abstracted as a processor
+element (PE) in ROSS. Each PE owns a number of LPs and
+schedules events in time-stamp order for all LPs assigned to
+it. Events that are destined for a logical process on another
+PE (i.e. remote events) are sent as MPI messages. 
+
+The underlying ROSS simulator is itself, a very complex piece of software with a large set of parameters. When changed, these parameters can trigger large changes in metrics such as number of reverse computations, remote events, event efficiency, etc. The only data collection is averaged over all processes and collected at the very end of the simulation. 
 
 \section{Research Questions}
 %Write down at least 2 specific research questions that can be solved by analyzing this data. The first should be "obvious" and may simply communicate the overall quantity of data you've got your hands on. The second should be more complex or subtle, that can be answered by the data, but will involve rearranging or simplifying or finding correlations within the data.
+
+ROSS is designed to be a very fast and efficient simulator. In order to get the best possible speed-up, developers need to know what is going on behind the curtains. We need to know not only if a simulation is experiencing hotspots, but also be able to detect the cause of those hotspots. 
 
 \section{Hypotheses}
 %What are your specific hypotheses related to these research questions? What knowledge are your drawing on to make these predictions?
