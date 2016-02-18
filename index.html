@@ -58,27 +58,20 @@
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        var loadData = function(){
+        var loadData = function(i, j){
             var colors = ["steelblue", "pink", "green", "orange", "red", "purple", "yellow"];
-            for (i=1; i < 8; i++)
-            {
-                for (j=0; j < 1; j++)
-                { 
-                    console.log(i);
-                    var fname = "data/slimfly7-min-batch-10/batch" + Math.pow(2, i) + "-" + j + ".txt";
-                    d3.csv(fname, function(error, simRuns) {
-                        // Extract the list of dimensions and create a scale for each.
-                        x.domain(dimensions = d3.keys(simRuns[0]).filter(function(d) {
-                            return d != "name" && (y[d] = d3.scale.linear()
-                            .domain(d3.extent(simRuns, function(p) { return +p[d]; }))
-                            .range([height, 0]));
-                            }));
-                        console.log(i);
-                        console.log(colors[i-1]);
-                        runSetup(simRuns, colors[i-1]);
-                    });
-                }
-            }
+            var simData = [];
+            var fname = "data/slimfly7-min-batch-10/batch" + Math.pow(2, i) + "-" + j + ".txt";
+            d3.csv(fname, function(error, simRuns) {
+                // Extract the list of dimensions and create a scale for each.
+                x.domain(dimensions = d3.keys(simRuns[0]).filter(function(d) {
+                    return d != "name" && (y[d] = d3.scale.linear()
+                    .domain(d3.extent(simRuns, function(p) { return +p[d]; }))
+                    .range([height, 0]));
+                    }));
+                    runSetup(simRuns, colors[i-1]);
+            });
+            
         };
 
         var runSetup = function(simRuns, color){
@@ -124,7 +117,14 @@
                 .attr("width", 16);
         };
 
-        loadData();
+        var numBatch = 1, numPE = 2;
+        for (i=1; i <= numBatch; i++)
+        {
+            for (j=0; j < numPE; j++)
+            { 
+                loadData(i,j);
+            }
+        }
 
         // Returns the path for a given data point.
         function path(d) {
